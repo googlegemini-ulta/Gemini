@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Enterprise Portal - MD Alamin Sohag</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="sovereign-header">
+        <h1>EMPIRE OF MD ALAMIN SOHAG</h1>
+        <p>Sovereign Operational & Algorithmic Command Matrix [CLASSIFICATION: TOP SECRET]</p>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Strategic Core Section -->
+        <section class="card core-card">
+            <h2>The Strategic Core</h2>
+            <p><strong>Lead Architect:</strong> MD Alamin Sohag</p>
+            <p><strong>Execution Status:</strong> <span class="status-active">Autonomous & Secure</span></p>
+            <p><strong>Active Gemini Agents:</strong> 12 Multi-Agent Nodes</p>
+            <button onclick="triggerSimulation()">Run Monte Carlo Digital Twin</button>
+        </section>
+
+        <!-- Administrative Shield Section -->
+        <section class="card shield-card">
+            <h2>Administrative Shield</h2>
+            <ul class="metrics-list">
+                <li>Execution Latency: <strong>&lt; 12 Seconds</strong></li>
+                <li>Operational Friction Tax: <strong>&lt; 0.4% Revenue</strong></li>
+                <li>Global Compliance Filter: <strong>Passed (45+ Jurisdictions)</strong></li>
+            </ul>
+        </section>
+
+        <!-- Liquidity Tiers Section -->
+        <section class="card chart-card">
+            <h2>Dynamic Liquidity Matrix (Tiers 0-3)</h2>
+            <canvas id="liquidityChart"></canvas>
+        </section>
+
+        <!-- Direct Gemini & API Command Console -->
+        <section class="card chat-card" style="grid-column: span 2;">
+            <h2>Sovereign Gemini & API Command Interface</h2>
+            <div id="chat-output" class="terminal-box" style="height: 150px; overflow-y: auto; margin-bottom: 10px; background: #0b0f19; padding: 10px; border-radius: 4px; color: #34d399; font-family: 'Courier New', monospace;">
+                [System]: Secure connection established with Gemini API Matrix.<br>
+                [System]: Ready for direct prompt or autonomous API execution.
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="user-prompt" placeholder="Enter command or talk to Gemini..." style="flex: 1; background: #0f172a; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 4px; font-family: 'Courier New', monospace;">
+                <button onclick="executeMasterCommand()" style="background: #3b82f6; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Execute / Send</button>
+            </div>
+        </section>
+
