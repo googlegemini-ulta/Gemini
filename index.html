@@ -1,54 +1,299 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Enterprise Portal - MD Alamin Sohag</title>
+    <title>PayGate Studio Sandbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Tailwind Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-    <header class="sovereign-header">
-        <h1>EMPIRE OF MD ALAMIN SOHAG</h1>
-        <p>Sovereign Operational & Algorithmic Command Matrix [CLASSIFICATION: TOP SECRET]</p>
-    </header>
+<body class="min-h-screen font-sans transition-colors duration-200 bg-slate-950 text-slate-100">
 
-    <main class="dashboard-grid">
-        <!-- Strategic Core Section -->
-        <section class="card core-card">
-            <h2>The Strategic Core</h2>
-            <p><strong>Lead Architect:</strong> MD Alamin Sohag</p>
-            <p><strong>Execution Status:</strong> <span class="status-active">Autonomous & Secure</span></p>
-            <p><strong>Active Gemini Agents:</strong> 12 Multi-Agent Nodes</p>
-            <button onclick="triggerSimulation()">Run Monte Carlo Digital Twin</button>
-        </section>
+  <!-- TOP NAVIGATION BAR -->
+  <header class="border-b sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl text-white shadow-lg shadow-indigo-500/20">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+            PayGate Studio
+          </span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            v2.4 Sandbox
+          </span>
+        </div>
+      </div>
 
-        <!-- Administrative Shield Section -->
-        <section class="card shield-card">
-            <h2>Administrative Shield</h2>
-            <ul class="metrics-list">
-                <li>Execution Latency: <strong>&lt; 12 Seconds</strong></li>
-                <li>Operational Friction Tax: <strong>&lt; 0.4% Revenue</strong></li>
-                <li>Global Compliance Filter: <strong>Passed (45+ Jurisdictions)</strong></li>
-            </ul>
-        </section>
+      <nav class="flex space-x-1 sm:space-x-2 bg-slate-800/40 p-1 rounded-xl border border-slate-700/50">
+        <button onclick="switchTab('checkout')" id="tab-btn-checkout" class="flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-md">
+          <i data-lucide="credit-card" class="w-4 h-4"></i>
+          <span class="hidden md:inline">Checkout Simulator</span>
+        </button>
+        <button onclick="switchTab('transactions')" id="tab-btn-transactions" class="flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>Transactions</span>
+        </button>
+        <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          <i data-lucide="terminal" class="w-4 h-4"></i>
+          <span>Dev Console</span>
+        </button>
+      </nav>
 
-        <!-- Liquidity Tiers Section -->
-        <section class="card chart-card">
-            <h2>Dynamic Liquidity Matrix (Tiers 0-3)</h2>
-            <canvas id="liquidityChart"></canvas>
-        </section>
+      <div class="flex items-center space-x-3">
+        <button onclick="openApiKeyModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-mono rounded-lg border border-slate-700 hover:border-slate-600 bg-slate-900/50 text-slate-300 hover:text-white transition-all">
+          <i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span class="hidden lg:inline">API Keys</span>
+        </button>
+        <button onclick="toggleTheme()" class="p-2 rounded-xl border bg-slate-900 border-slate-800 text-amber-400 hover:bg-slate-800 transition-all">
+          <i data-lucide="sun" id="theme-icon" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
 
-        <!-- Direct Gemini & API Command Console -->
-        <section class="card chat-card" style="grid-column: span 2;">
-            <h2>Sovereign Gemini & API Command Interface</h2>
-            <div id="chat-output" class="terminal-box" style="height: 150px; overflow-y: auto; margin-bottom: 10px; background: #0b0f19; padding: 10px; border-radius: 4px; color: #34d399; font-family: 'Courier New', monospace;">
-                [System]: Secure connection established with Gemini API Matrix.<br>
-                [System]: Ready for direct prompt or autonomous API execution.
+  <!-- MAIN CONTENT AREA -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- METRICS DASHBOARD CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="p-5 rounded-2xl border bg-slate-900/60 border-slate-800/80">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+          <span>Total Volume</span>
+          <i data-lucide="dollar-sign" class="w-4 h-4 text-emerald-400"></i>
+        </div>
+        <div id="metric-volume" class="text-2xl font-bold font-mono text-emerald-400">$955.49</div>
+        <div class="text-xs text-slate-500 mt-1 flex items-center">
+          <i data-lucide="trending-up" class="w-3 h-3 text-emerald-400 mr-1"></i> Live sandbox total
+        </div>
+      </div>
+
+      <div class="p-5 rounded-2xl border bg-slate-900/60 border-slate-800/80">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+          <span>Total Charges</span>
+          <i data-lucide="refresh-cw" class="w-4 h-4 text-indigo-400"></i>
+        </div>
+        <div id="metric-charges" class="text-2xl font-bold font-mono">5</div>
+        <div class="text-xs text-slate-500 mt-1">Across 4 payment gateways</div>
+      </div>
+
+      <div class="p-5 rounded-2xl border bg-slate-900/60 border-slate-800/80">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+          <span>Success Rate</span>
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400"></i>
+        </div>
+        <div id="metric-success-rate" class="text-2xl font-bold font-mono text-teal-400">80.0%</div>
+        <div id="metric-success-text" class="text-xs text-slate-500 mt-1">4 of 5 succeeded</div>
+      </div>
+
+      <div class="p-5 rounded-2xl border bg-slate-900/60 border-slate-800/80">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+          <span>Active Gateway</span>
+          <i data-lucide="lock" class="w-4 h-4 text-violet-400"></i>
+        </div>
+        <div class="text-2xl font-bold font-mono text-violet-400">PayGate Unified</div>
+        <div class="text-xs text-emerald-400 mt-1 flex items-center">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> Sandbox Active
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 1: CHECKOUT SIMULATOR -->
+    <div id="tab-content-checkout" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-7 space-y-6">
+        <div class="p-6 rounded-2xl border bg-slate-900/80 border-slate-800">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold">Simulated Checkout Flow</h2>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium">Test Mode</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Order Amount ($ USD)</label>
+              <div class="relative">
+                <span class="absolute left-3 top-2.5 text-slate-500">$</span>
+                <input type="number" id="checkout-amount" value="49.99" class="w-full pl-8 pr-3 py-2 rounded-xl text-sm font-mono border bg-slate-950 border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="user-prompt" placeholder="Enter command or talk to Gemini..." style="flex: 1; background: #0f172a; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 4px; font-family: 'Courier New', monospace;">
-                <button onclick="executeMasterCommand()" style="background: #3b82f6; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Execute / Send</button>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Customer Name</label>
+              <input type="text" id="customer-name" value="Abrar Zahin" class="w-full px-3 py-2 rounded-xl text-sm border bg-slate-950 border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
-        </section>
+          </div>
 
+          <label class="block text-xs font-semibold text-slate-400 mb-2">Select Payment Method</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <button onclick="setPaymentMethod('card')" id="method-card" class="flex flex-col items-center justify-center p-3 rounded-xl border bg-indigo-600/10 border-indigo-500 text-indigo-400">
+              <i data-lucide="credit-card" class="w-5 h-5 mb-1.5"></i>
+              <span class="text-xs font-medium">Credit Card</span>
+            </button>
+            <button onclick="setPaymentMethod('mfs')" id="method-mfs" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-700/60 text-slate-400">
+              <i data-lucide="smartphone" class="w-5 h-5 mb-1.5"></i>
+              <span class="text-xs font-medium">Mobile Wallet</span>
+            </button>
+            <button onclick="setPaymentMethod('paypal')" id="method-paypal" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-700/60 text-slate-400">
+              <i data-lucide="wallet" class="w-5 h-5 mb-1.5"></i>
+              <span class="text-xs font-medium">PayPal</span>
+            </button>
+            <button onclick="setPaymentMethod('crypto')" id="method-crypto" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-700/60 text-slate-400">
+              <i data-lucide="qr-code" class="w-5 h-5 mb-1.5"></i>
+              <span class="text-xs font-medium">Crypto</span>
+            </button>
+          </div>
+
+          <div id="payment-form-container" class="p-4 rounded-xl border mb-6 bg-slate-950/50 border-slate-800">
+            <!-- Dynamic Form Container -->
+          </div>
+
+          <div class="flex items-center justify-between mb-6 p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i>
+              <span class="text-xs font-medium text-slate-300">Simulate Payment Decline / Error</span>
+            </div>
+            <input type="checkbox" id="simulate-failure" class="w-4 h-4 text-indigo-600 rounded bg-slate-900 border-slate-700 focus:ring-indigo-500">
+          </div>
+
+          <button onclick="handleProcessPayment()" id="pay-button" class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center space-x-2">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            <span>Pay Securely</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 space-y-6">
+        <div class="p-6 rounded-2xl border sticky top-24 bg-slate-900/80 border-slate-800">
+          <h3 class="text-lg font-bold mb-4 flex items-center space-x-2">
+            <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i>
+            <span>Real-Time Gateway Status</span>
+          </h3>
+          <div id="gateway-status-view">
+            <div class="text-center py-12 text-slate-500 space-y-3">
+              <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-400">
+                <i data-lucide="clock" class="w-6 h-6"></i>
+              </div>
+              <p class="text-sm">Submit payment on the left to trigger secure sandbox webhook transmission.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: TRANSACTIONS -->
+    <div id="tab-content-transactions" class="hidden p-6 rounded-2xl border bg-slate-900/80 border-slate-800">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-xl font-bold">Transaction History</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Real-time log of gateway charges and refund actions.</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+            <input type="text" id="search-query" oninput="renderTransactions()" placeholder="Search ID or customer..." class="pl-9 pr-4 py-2 rounded-xl text-xs border bg-slate-950 border-slate-700 text-white focus:outline-none">
+          </div>
+          <select id="status-filter" onchange="renderTransactions()" class="px-3 py-2 rounded-xl text-xs border bg-slate-950 border-slate-700 text-white font-medium">
+            <option value="All">All Status</option>
+            <option value="Success">Success</option>
+            <option value="Failed">Failed</option>
+            <option value="Refunded">Refunded</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b text-xs font-semibold uppercase tracking-wider border-slate-800 text-slate-400">
+              <th class="py-3 px-4">Transaction ID</th>
+              <th class="py-3 px-4">Customer</th>
+              <th class="py-3 px-4">Method</th>
+              <th class="py-3 px-4">Amount</th>
+              <th class="py-3 px-4">Status</th>
+              <th class="py-3 px-4">Timestamp</th>
+              <th class="py-3 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="transactions-table-body" class="divide-y divide-slate-800/40 text-sm font-mono">
+            <!-- Dynamic Rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: DEV CONSOLE -->
+    <div id="tab-content-sandbox" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-6 space-y-6">
+        <div class="p-6 rounded-2xl border bg-slate-900/80 border-slate-800">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-base flex items-center space-x-2">
+              <i data-lucide="code" class="w-4 h-4 text-indigo-400"></i>
+              <span>API Request Builder</span>
+            </h3>
+            <div class="flex space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+              <button onclick="setCodeLang('curl')" id="lang-curl" class="px-2.5 py-1 rounded text-xs font-mono uppercase bg-indigo-600 text-white">curl</button>
+              <button onclick="setCodeLang('javascript')" id="lang-javascript" class="px-2.5 py-1 rounded text-xs font-mono uppercase text-slate-400">javascript</button>
+              <button onclick="setCodeLang('python')" id="lang-python" class="px-2.5 py-1 rounded text-xs font-mono uppercase text-slate-400">python</button>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800 text-xs font-mono text-slate-400">
+              <span>POST /v1/charges</span>
+              <button onclick="copyCodeSnippet()" class="flex items-center space-x-1 text-indigo-400 hover:text-indigo-300">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span id="copy-code-text">Copy Code</span>
+              </button>
+            </div>
+            <pre id="code-snippet-pre" class="p-4 text-xs font-mono text-indigo-300 overflow-x-auto leading-relaxed"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 space-y-6">
+        <div class="p-6 rounded-2xl border bg-slate-900/80 border-slate-800">
+          <h3 class="font-bold text-base mb-4 flex items-center space-x-2">
+            <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i>
+            <span>Live Inspection & Response Inspector</span>
+          </h3>
+          <div id="api-response-container">
+            <div class="text-center py-16 text-slate-500 text-sm font-sans">
+              Execute a checkout transaction in the simulator tab to inspect live JSON request/response payloads.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- API KEY MODAL -->
+  <div id="api-key-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="w-full max-w-md p-6 rounded-2xl border shadow-2xl bg-slate-900 border-slate-800 text-white">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-base flex items-center space-x-2">
+          <i data-lucide="key" class="w-4 h-4 text-amber-400"></i>
+          <span>API Keys & Credentials</span>
+        </h3>
+        <button onclick="closeApiKeyModal()" class="text-slate-400 hover:text-slate-200 text-sm font-bold">✕</button>
+      </div>
+      <p class="text-xs text-slate-400 mb-4">Use this secret live sandbox API key to authenticate requests from your backend server to PayGate Studio.</p>
+      <div class="space-y-3 mb-6">
+        <label class="block text-xs font-semibold text-slate-400">Secret API Key</label>
+        <div class="flex items-center space-x-2">
+          <input type="text" readonly id="api-key-input" value="sk_live_gemini_8f93a21b490d11ee8c990242ac120002" class="w-full px-3 py-2 rounded-xl text-xs font-mono bg-slate-950 border border-slate-800 text-indigo-400">
+          <button onclick="copyApiKey()" class="px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-500 transition-all">Copy</button>
+        </div>
+      </div>
+      <button onclick="closeApiKeyModal()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs transition-all">Done</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
