@@ -1,83 +1,75 @@
-// Liquidity Matrix Chart Configuration
-const ctx = document.getElementById('liquidityChart').getContext('2d');
-const liquidityChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Tier 0: Sovereign Vaults (40%)', 'Tier 1: Dynamic Yield (35%)', 'Tier 2: Growth Equity (20%)', 'Tier 3: Operational (5%)'],
-        datasets: [{
-            data: [40, 35, 20, 5],
-            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: { color: '#e2e8f0', font: { family: 'Courier New' } }
-            }
-        }
-    }
+let transactions = [
+  { id: 'TXN_001', partner: 'Partner Alpha', type: 'Credit', amount: 1500.00, description: 'Service Payment', date: new Date().toLocaleDateString() },
+  { id: 'TXN_002', partner: 'Partner Alpha', type: 'Due', amount: 300.00, description: 'Pending Invoice #12', date: new Date().toLocaleDateString() },
+  { id: 'TXN_003', partner: 'Partner Beta', type: 'Debit', amount: 850.50, description: 'Cloud Infra Expense', date: new Date().toLocaleDateString() }
+];
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderDashboard();
 });
 
-// Autonomous Monte Carlo Digital Twin Simulation
-function triggerSimulation() {
-    const logContainer = document.getElementById('log-container');
-    const timestamp = new Date().toLocaleTimeString();
-    
-    logContainer.innerHTML += `<br>[${timestamp}] Running Monte Carlo Digital Twin Simulation...`;
-    logContainer.scrollTop = logContainer.scrollHeight;
+function renderDashboard() {
+  const selectedPartner = document.getElementById('partner-filter').value;
+  const tbody = document.getElementById('transaction-table-body');
 
-    setTimeout(() => {
-        logContainer.innerHTML += `<br>[${timestamp}] SUCCESS: Sovereign probability matrix optimized. Risk variance < 0.02%.`;
-        logContainer.scrollTop = logContainer.scrollHeight;
-    }, 1200);
+  const filtered = selectedPartner === 'All' 
+    ? transactions 
+    : transactions.filter(t => t.partner === selectedPartner);
+
+  let totalCredit = 0;
+  let totalDebit = 0;
+  let totalDue = 0;
+
+  filtered.forEach(t => {
+    if (t.type === 'Credit') totalCredit += t.amount;
+    if (t.type === 'Debit') totalDebit += t.amount;
+    if (t.type === 'Due') totalDue += t.amount;
+  });
+
+  document.getElementById('total-credit').innerText = `$${totalCredit.toFixed(2)}`;
+  document.getElementById('total-debit').innerText = `$${totalDebit.toFixed(2)}`;
+  document.getElementById('total-due').innerText = `$${totalDue.toFixed(2)}`;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-500 font-sans">No records found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(t => `
+    <tr class="hover:bg-slate-800/30">
+      <td class="py-3 px-4 font-bold text-indigo-400">${t.id}</td>
+      <td class="py-3 px-4 font-sans text-xs font-semibold">${t.partner}</td>
+      <td class="py-3 px-4 text-xs">
+        <span class="px-2 py-0.5 rounded-full font-semibold ${
+          t.type === 'Credit' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+          t.type === 'Debit' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
+          'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+        }">${t.type}</span>
+      </td>
+      <td class="py-3 px-4 font-bold">$${t.amount.toFixed(2)}</td>
+      <td class="py-3 px-4 font-sans text-xs text-slate-400">${t.description}</td>
+      <td class="py-3 px-4 text-xs text-slate-500">${t.date}</td>
+    </tr>
+  `).join('');
 }
 
-// Master "API of APIs" Unified Execution Engine (Gemini + Google Cloud + Alphabet Matrix)
-const MasterApiGateway = {
-    registry: {
-        gemini: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
-        googleCloud: "https://cloudresourcemanager.googleapis.com/v1/projects",
-        alphabetMatrix: "https://api.alphabet.matrix.local/v1/telemetry"
-    },
+function addTransaction(e) {
+  e.preventDefault();
+  const partner = document.getElementById('form-partner').value;
+  const type = document.getElementById('form-type').value;
+  const amount = parseFloat(document.getElementById('form-amount').value);
+  const description = document.getElementById('form-desc').value;
 
-    async callApi(targetNode, payload = {}) {
-        const timestamp = new Date().toLocaleTimeString();
-        const logContainer = document.getElementById('chat-output');
-        
-        if (!this.registry[targetNode]) {
-            logContainer.innerHTML += `<br><span style="color: #ef4444;">[${timestamp}] ERROR: Unknown target API node '${targetNode}'</span>`;
-            return;
-        }
+  const newTxn = {
+    id: `TXN_${Math.floor(100 + Math.random() * 900)}`,
+    partner,
+    type,
+    amount,
+    description,
+    date: new Date().toLocaleDateString()
+  };
 
-        logContainer.innerHTML += `<br><span style="color: #f59e0b;">[${timestamp}] API of APIs: Routing request to [${targetNode.toUpperCase()}]...</span>`;
-        logContainer.scrollTop = logContainer.scrollHeight;
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            logContainer.innerHTML += `<br><span style="color: #10b981;">[${timestamp}] SUCCESS: Response received from ${targetNode}. ZTNA verified.</span>`;
-            logContainer.scrollTop = logContainer.scrollHeight;
-        } catch (error) {
-            logContainer.innerHTML += `<br><span style="color: #ef4444;">[${timestamp}] CRITICAL: API Gateway failure on ${targetNode}</span>`;
-        }
-    }
-};
-
-// Universal Command Executor for Direct Gemini & API Interactivity
-function executeMasterCommand() {
-    const inputField = document.getElementById('user-prompt');
-    const outputBox = document.getElementById('chat-output');
-    const promptText = inputField ? inputField.value.trim() : "";
-    const timestamp = new Date().toLocaleTimeString();
-
-    if (!promptText) return;
-
-    outputBox.innerHTML += `<br><span style="color: #60a5fa;">[${timestamp}] User Command:</span> ${promptText}`;
-    inputField.value = '';
-    outputBox.scrollTop = outputBox.scrollHeight;
-
-    // Triggering the Master API Gateway across sovereign nodes
-    MasterApiGateway.callApi('gemini', { prompt: promptText });
+  transactions.unshift(newTxn);
+  document.getElementById('transaction-form').reset();
+  renderDashboard();
 }
