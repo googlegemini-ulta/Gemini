@@ -1,144 +1,144 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partner Ledger & Reconciliation Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = { darkMode: 'class' }
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sovereign Enterprise Ledger - Empire of MD Alamin Sohag</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 font-sans p-4 sm:p-6">
-  <div class="max-w-7xl mx-auto space-y-6">
-    
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800 pb-4 gap-4">
-      <div>
-        <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-          Business Partner Reconciliation Dashboard
-        </h1>
-        <p class="text-xs text-slate-400 mt-1">Track Debit, Credit, Due Balances & Detailed Ledgers.</p>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-indigo-400">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-slate-100">Sovereign Enterprise Ledger</h1>
+          <p class="text-xs text-slate-400 font-mono">Controller: MD Alamin Sohag | Secure Local Matrix</p>
+        </div>
       </div>
-      
-      <!-- Partner Filter -->
-      <div class="flex items-center space-x-2 w-full sm:w-auto">
-        <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filter Partner:</label>
-        <select id="partner-filter" onchange="renderDashboard()" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs bg-slate-900 border border-slate-700 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <option value="All">All Partners</option>
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+          LocalStorage Active
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- Controls & Filters Bar -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Filter by Business Partner</label>
+        <select id="partner-filter" onchange="renderDashboard()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+          <option value="All">All Partners (Sovereignty View)</option>
           <option value="Minister hi tech park (DEAL002905)">Minister hi tech park (DEAL002905)</option>
           <option value="BUTTERFLY MARKETING LIMITED (3000002272)">BUTTERFLY MARKETING LIMITED (3000002272)</option>
         </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Search Ledger</label>
+        <input type="text" id="search-query" oninput="renderDashboard()" placeholder="Search by ID or Description..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
       </div>
     </div>
 
     <!-- Summary Metrics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-sm">
-        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Total Sales/Due Created</div>
-        <div id="total-sales" class="text-2xl font-bold font-mono text-amber-400">৳0.00</div>
-        <div class="text-[10px] text-slate-500 mt-1">Total Bill/Invoice Amount</div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+        <p class="text-xs font-semibold text-slate-400 uppercase">Total Sales / Bill</p>
+        <h3 id="total-sales" class="text-2xl font-bold text-indigo-400 mt-2 font-mono">৳0.00</h3>
       </div>
-      
-      <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-sm">
-        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Total Credit (Received)</div>
-        <div id="total-credit" class="text-2xl font-bold font-mono text-emerald-400">৳0.00</div>
-        <div class="text-[10px] text-slate-500 mt-1">Payments Received from Partners</div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+        <p class="text-xs font-semibold text-slate-400 uppercase">Total Credit (Paid)</p>
+        <h3 id="total-credit" class="text-2xl font-bold text-emerald-400 mt-2 font-mono">৳0.00</h3>
       </div>
-
-      <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-sm">
-        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Total Debit (Refunded/Paid)</div>
-        <div id="total-debit" class="text-2xl font-bold font-mono text-indigo-400">৳0.00</div>
-        <div class="text-[10px] text-slate-500 mt-1">Amounts Paid or Adjusted</div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+        <p class="text-xs font-semibold text-slate-400 uppercase">Total Debit</p>
+        <h3 id="total-debit" class="text-2xl font-bold text-amber-400 mt-2 font-mono">৳0.00</h3>
       </div>
-
-      <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-sm">
-        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Outstanding Due Balance</div>
-        <div id="total-due" class="text-2xl font-bold font-mono text-rose-400">৳0.00</div>
-        <div class="text-[10px] text-slate-500 mt-1">Current Payable / Receivable</div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 border-l-4 border-l-rose-500">
+        <p class="text-xs font-semibold text-slate-400 uppercase">Net Balance Due</p>
+        <h3 id="total-due" class="text-2xl font-bold text-rose-400 mt-2 font-mono">৳0.00</h3>
       </div>
     </div>
 
-    <!-- Entry Form -->
-    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-      <h2 class="text-lg font-bold mb-4 flex items-center space-x-2">
-        <i data-lucide="plus-circle" class="w-5 h-5 text-indigo-400"></i>
-        <span>Add Partner Transaction</span>
+    <!-- Add Transaction Form Section -->
+    <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-6">
+      <h2 class="text-base font-bold text-slate-200 mb-4 flex items-center">
+        <i data-lucide="plus-circle" class="w-5 h-5 mr-2 text-indigo-400"></i> Record New Ledger Entry
       </h2>
-      <form id="transaction-form" onsubmit="addTransaction(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-        <div class="lg:col-span-2">
-          <label class="block text-xs font-medium text-slate-400 mb-1">Select Partner</label>
-          <select id="form-partner" required class="w-full px-3 py-2 rounded-xl text-xs bg-slate-950 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <form id="transaction-form" onsubmit="addTransaction(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Partner</label>
+          <select id="form-partner" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
             <option value="Minister hi tech park (DEAL002905)">Minister hi tech park (DEAL002905)</option>
             <option value="BUTTERFLY MARKETING LIMITED (3000002272)">BUTTERFLY MARKETING LIMITED (3000002272)</option>
           </select>
         </div>
-
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Transaction Type</label>
-          <select id="form-type" required class="w-full px-3 py-2 rounded-xl text-xs bg-slate-950 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value="Bill">Bill / Invoice (Due)</option>
-            <option value="Credit">Credit (Payment Received)</option>
-            <option value="Debit">Debit (Payment Out/Adjustment)</option>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Type</label>
+          <select id="form-type" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+            <option value="Bill">Bill</option>
+            <option value="Credit">Credit</option>
+            <option value="Debit">Debit</option>
           </select>
         </div>
-
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Amount (BDT ৳)</label>
-          <input type="number" step="0.01" id="form-amount" required placeholder="0.00" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-950 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Amount (BDT)</label>
+          <input type="number" step="0.01" id="form-amount" placeholder="0.00" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
         </div>
-
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Reference / Note</label>
-          <input type="text" id="form-desc" required placeholder="Invoice # or Note" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-950 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Description</label>
+          <input type="text" id="form-desc" placeholder="Invoice # or Note..." required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
         </div>
-
         <div class="flex items-end">
-          <button type="submit" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/30">
-            Save Record
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors flex items-center justify-center">
+            <i data-lucide="save" class="w-4 h-4 mr-1.5"></i> Save Entry
           </button>
         </div>
       </form>
     </div>
 
-    <!-- Ledger & Reconciliation Logs Table -->
-    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h2 class="text-lg font-bold flex items-center space-x-2">
-          <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
-          <span>Partner Reconciliation Ledger Logs</span>
-        </h2>
-        <div class="relative w-full sm:w-64">
-          <input type="text" id="search-query" oninput="renderDashboard()" placeholder="Search Invoice / Note..." class="w-full pl-8 pr-4 py-1.5 rounded-xl text-xs bg-slate-950 border border-slate-700 text-white focus:outline-none">
-          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5"></i>
-        </div>
+    <!-- Ledger Table Section -->
+    <div class="bg-slate-900/40 border border-slate-800 rounded-xl overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+        <h2 class="text-base font-bold text-slate-200">Transaction History & Running Reconciliation</h2>
+        <span class="text-xs text-slate-400 font-mono">Formula: Bill - Credit + Debit = Due</span>
       </div>
-
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full text-left border-collapse text-sm">
           <thead>
-            <tr class="border-b text-xs font-semibold uppercase tracking-wider border-slate-800 text-slate-400">
-              <th class="py-3 px-4">Transaction ID</th>
+            <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase bg-slate-950/50">
+              <th class="py-3 px-4">ID</th>
               <th class="py-3 px-4">Partner</th>
               <th class="py-3 px-4">Type</th>
               <th class="py-3 px-4">Amount</th>
-              <th class="py-3 px-4">Running Due Balance</th>
-              <th class="py-3 px-4">Note / Ref</th>
+              <th class="py-3 px-4">Running Due</th>
+              <th class="py-3 px-4">Description</th>
               <th class="py-3 px-4">Date</th>
-              <th class="py-3 px-4 text-right">Action</th>
+              <th class="py-3 px-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody id="transaction-table-body" class="divide-y divide-slate-800/60 text-xs font-mono">
-            <!-- Dynamic Data -->
+          <tbody id="transaction-table-body" class="divide-y divide-slate-800/60 font-mono text-xs">
+            <!-- Dynamic Rows Injected via script.js -->
           </tbody>
         </table>
       </div>
     </div>
 
-  </div>
+  </main>
 
+  <!-- Script File Link -->
   <script src="script.js"></script>
 </body>
 </html>
