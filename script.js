@@ -1,5 +1,5 @@
-// Initial Dummy Transactions for Both Partners
-let transactions = [
+// Initial Dummy Transactions or Load from LocalStorage
+let transactions = JSON.parse(localStorage.getItem('partner_ledger_transactions')) || [
   {
     id: 'TXN_1001',
     partner: 'Minister hi tech park (DEAL002905)',
@@ -39,6 +39,10 @@ window.addEventListener('DOMContentLoaded', () => {
   renderDashboard();
 });
 
+function saveToLocalStorage() {
+  localStorage.setItem('partner_ledger_transactions', JSON.stringify(transactions));
+}
+
 function renderDashboard() {
   const selectedPartner = document.getElementById('partner-filter').value;
   const searchQuery = document.getElementById('search-query').value.toLowerCase();
@@ -76,8 +80,6 @@ function renderDashboard() {
 
   // Calculate Running Balance per item for presentation
   let runningDue = 0;
-  
-  // Sort chronically for accurate ledger calculation
   let ledgerSorted = [...filtered].reverse();
 
   tbody.innerHTML = ledgerSorted.map((t) => {
@@ -127,11 +129,13 @@ function addTransaction(e) {
   };
 
   transactions.unshift(newTxn);
+  saveToLocalStorage();
   document.getElementById('transaction-form').reset();
   renderDashboard();
 }
 
 function deleteTransaction(id) {
   transactions = transactions.filter(t => t.id !== id);
+  saveToLocalStorage();
   renderDashboard();
 }
